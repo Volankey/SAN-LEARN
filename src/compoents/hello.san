@@ -1,0 +1,21 @@
+<template>
+    <p class="hello">Hello {{name}}!</p>
+</template>
+<script>
+    import san from 'san';
+
+    export  default{
+        initData: function () {
+            return {
+                name: 'Volankey'
+            };
+        }
+    };
+</script>  
+
+<style>
+    .hello {
+      color: skyblue;
+    }
+
+</style>
