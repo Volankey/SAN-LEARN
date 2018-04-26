@@ -1,0 +1,60 @@
+<template>
+    <div id="app">
+        <my-input name='name' value="{= name =}" placeholder="姓名 String"/> 
+        <my-input name='year'value="{= age =}"  placeholder="年龄 Nubmer"/>   
+        <my-input name='intro' value="{= des =}"  placeholder="简介 String"/>  
+        <p>
+            信息 {{info}}
+            <button  on-click="clear">清除信息</button>
+        </p>
+        <p>姓名 {{name}}</p>
+        <p>年龄 {{age}}</p>
+        <p>简介 {{des}}</p>
+    </div>
+</template> 
+
+
+<script>
+    /*
+        暂时还不知数据校验应该用什么
+    */
+    import san, { DataTypes } from 'san';
+    //引用组件
+    import MYINPUT from './compoents/input.san';
+
+
+    export default {
+        //清除信息
+        clear: function () {
+            this.data.set('name', "");
+            this.data.set('age', "");
+            this.data.set('des', "");
+        },
+        //初始化data
+        initData: function () {
+            return {
+                name: '',
+                age: '',
+                des: '',
+            }
+
+        },
+        //生成计算数据,info是通过其他属性算出来的
+        computed: {
+            info: function () {
+                return this.data.get('name') + ' ' + this.data.get('age') + ' ' + this.data.get('des');
+            }
+        },
+        components: {
+            //引用组件
+            'my-input': MYINPUT,
+        }
+    };
+</script>  
+
+<style>
+    .hello {
+      color: skyblue;
+    }
+</style>
+

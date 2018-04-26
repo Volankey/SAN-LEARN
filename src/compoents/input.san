@@ -1,0 +1,24 @@
+
+<template>  
+    <input class="input" type="text" name="{{name}}" value="{= value =}" placeholder="{{placeholder}}"/>
+</template>
+<script>
+    /*
+        其实这个单独作为组件可能没什么必要
+        我就是想 试一下san的组件
+        对比react不用写props了
+    */
+    import san, { DataTypes } from 'san';
+    export default {
+
+    };
+</script>  
+
+<style>
+    .input {
+      outline: none;
+      border: 1px solid #dfdfdf;
+      padding: 5px 5px;
+      font-size: 14px;
+    }
+</style>

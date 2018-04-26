@@ -1,8 +1,7 @@
+import APP from './app.san';
 
 
-import Hello from './compoents/hello.san';
-
-var myApp = new Hello();
+var app = new APP();
 
 
-myApp.attach(document.getElementById("app"));
+app.attach(document.body);
