@@ -1,21 +1,63 @@
 
-<template>  
-    <input class="input" type="text" name="{{name}}" value="{= value =}" placeholder="{{placeholder}}"/>
+<template> 
+    <div className="my-form">
+        <input type="text" name='name' value="{= name =}" placeholder="姓名 String"/> 
+        <input type="number" name='age' value="{{age}}" on-input="changeAge($event)"  placeholder="年龄 Nubmer"/>   
+        <input type="text" name='intro' value="{= des =}"  placeholder="简介 String"/>  
+        <p>
+            信息 {{info}}
+            <button  on-click="clear">清除信息</button>
+        </p>
+        <p>姓名 {{name}}</p>
+        <p>年龄 {{age}}</p>
+        <p>简介 {{des}}</p>
+    </div>
+       
 </template>
 <script>
-    /*
-        其实这个单独作为组件可能没什么必要
-        我就是想 试一下san的组件
-        对比react不用写props了
-    */
     import san, { DataTypes } from 'san';
     export default {
+        dataTypes: {
+            namevalue: DataTypes.string,
+            age: DataTypes.number,
+            intro: DataTypes.string
+        },
+        //监听年龄输入value改变
+        changeAge:function(event){
+            let v = parseInt(event.target.value);
+            if(isNaN(v) || v<0)
+            {
+                this.data.set("age",0);
+            }
+            else
+                this.data.set("age",v);
+        },
+        //清除信息
+        clear: function () {
+            this.data.set('name', "");
+            this.data.set('age', 0);
+            this.data.set('des', "");
+        },
+        //初始化data
+        initData: function () {
+            return {
+                name: '',
+                age: 0,
+                des: '',
+            }
 
+        },
+        //生成计算数据,info是通过其他属性算出来的
+        computed: {
+            info: function () {
+                return this.data.get('name') + ' ' + this.data.get('age') + ' ' + this.data.get('des');
+            }
+        },
     };
 </script>  
 
 <style>
-    .input {
+    .my-form input {
       outline: none;
       border: 1px solid #dfdfdf;
       padding: 5px 5px;
