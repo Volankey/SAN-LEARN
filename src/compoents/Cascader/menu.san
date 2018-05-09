@@ -22,7 +22,7 @@
             this.data.set("activeOptions",[option])
         },
         handleChanged:function(){
-             // 向组件树的上层派发消息
+             // 向组件树的上层派发消息告诉父级组件选好了值了
              
             this.dispatch('Values:changed',{
                 acv:this.data.get("activeValue"),
@@ -63,6 +63,8 @@
                         //递归 判断是否是选中的值才能进行递归
                         if(options[i].value==activeValue[level]){
                             options[i].selected = true;
+                            //判断是否有子元素才可以递归
+                            //如果不是 那么我们触发change
                             options[i].children? makeData(options[i].children,level+1):this.handleChanged();
                         }
                         else{
@@ -85,7 +87,9 @@
         initData: function () {
           
             return {
+                //选中的值
                 activeValue:[],
+                //展示的选项
                 activeOptions:[[]]
             }
 
