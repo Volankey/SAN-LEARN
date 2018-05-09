@@ -1,0 +1,131 @@
+
+<template> 
+   <div className="cascader-menu" >
+        <ul s-for="options,index in activeOptions">
+            <li className="{{option.selected==true?'active':''}}" s-for="option in options" on-click="handleClick(index,option)">
+                {{option.label}}
+            </li>
+        </ul>
+   </div>
+</template>
+<script>
+    import san, { DataTypes } from 'san';
+   
+    export default {
+        dataTypes: {
+            option: DataTypes.array,
+        },
+        attached:function(){
+            this.acvl=[];
+            let option = this.data.get("option");
+            //初次加载应该是第0级的显示出来
+            this.data.set("activeOptions",[option])
+        },
+        handleChanged:function(){
+             // 向组件树的上层派发消息
+             
+            this.dispatch('Values:changed',{
+                acv:this.data.get("activeValue"),
+                acvl:this.acvl
+            } );
+        },
+        handleClick:function(index,option){
+            
+            
+            let acv = this.data.get("activeValue");
+            //判断是否比当前的级别小，小于的话需要删除后边的activeValue
+            if(index+1<acv.length)
+                 acv = acv.splice(0,index+1);
+            acv[index]=option.value;
+            this.acvl[index] = option.label;
+            this.data.set("activeValue",acv);
+            this.handleData(index,option);
+            console.log(acv);
+        },  
+        //处理option数据进行级联格式化
+        handleData:function(currentLevel,data){
+            let options = this.data.get("option");
+
+            let new_option = [];
+            let activeValue = this.data.get("activeValue");
+    
+            //生成要显示的数据格式 参数:options 级别level
+            const makeData=(options,level=0)=>{
+
+                    for(var i = 0 ,max = options.length; i < max ; i++){
+                        if(!new_option[level]){
+                            new_option[level]=[];
+                            
+                        }
+                        new_option[level].push(options[i]);
+                        
+                       
+                        //递归 判断是否是选中的值才能进行递归
+                        if(options[i].value==activeValue[level]){
+                            options[i].selected = true;
+                            options[i].children? makeData(options[i].children,level+1):this.handleChanged();
+                        }
+                        else{
+                            options[i].selected = false;
+                        }
+                    }
+                    
+            }
+
+            makeData(options);
+           
+            console.log(JSON.stringify(new_option),null,"\t")
+            
+            this.data.set("activeOptions",new_option);
+            
+           
+
+        },
+        //初始化data
+        initData: function () {
+          
+            return {
+                activeValue:[],
+                activeOptions:[[]]
+            }
+
+        },
+        
+    };
+</script>  
+
+<style>
+    .cascader-menu {
+        display:flex;
+        cursor:default;
+        border: 1px solid #d1dbe5;
+        border-radius: 2px;
+        margin:5px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,.12), 0 0 6px rgba(0,0,0,.04);
+    }
+    .cascader-menu ul{
+        list-style:none;
+        padding:10px 0;
+        min-width:160px;
+        border-right: solid 1px #d1dbe5;
+        background-color: #fff;
+        box-sizing: border-box;
+        margin:0;
+    }
+    .cascader-menu li{
+        padding:10px 6px;
+        color: #48576a;
+         
+    }
+    .cascader-menu li.active{
+       background-color: #20a0ff;
+       color: #fff;
+    }
+    .cascader-menu li:hover{
+       background-color: #e4e8f1;
+       cursor:pointer;
+    }
+    .cascader-menu li.active:hover{
+        background-color: #1c8de0;
+    } 
+</style>

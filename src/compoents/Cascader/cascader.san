@@ -1,0 +1,102 @@
+
+<template>  
+    <div className="cascader-wrap" on-click="stopPropagation($event)">
+        <div on-click="handleClick($event)" className="cascader-input">
+            <span  className="placeholder">{{value==""?"请选择":value}}</span>
+        </div>
+        <div style="{{showMenu==true?'':'visibility: hidden'}}"  className="{{showMenu==true?'menu-wrap':'menu-wrap leave-active'}}">
+            <my-menu option="{{option}}" changed="handleChanged"/> 
+        </div> 
+    </div>
+  
+</template>
+<script>
+    import san, { DataTypes } from 'san';
+    import Menu from "./menu.san";
+    export default {
+        dataTypes: {
+            option: DataTypes.array,
+        },
+        components: {
+            //引用组件
+            'my-menu': Menu,
+        },
+        inited:function(){
+            //当document其他元素被点击则隐藏
+            document.addEventListener("click",()=>{
+                this.data.set("showMenu",false);
+            })
+        },
+        stopPropagation:function(event){
+            //阻止冒泡,防止点击选项也会冒泡到document的隐藏
+            event.stopPropagation();
+        },
+        handleClick:function(e){
+          
+            let showMenu = this.data.get("showMenu");
+            this.data.set("showMenu",!showMenu);
+        },
+        handleChanged:function(values){
+            let text = values.acvl.join("/");
+             let showMenu = this.data.get("showMenu");
+            this.data.set("value",text);
+            this.data.set("showMenu",!showMenu);
+        },
+        messages: {
+            'Values:changed': function (arg) {
+                var value = arg.value;
+                this.handleChanged(value);
+
+                // arg.target 可以拿到派发消息的组件
+            }
+        },
+        //初始化data
+        initData: function () {
+            return {    
+                showMenu:false,
+                value:"",
+               
+            }
+
+        }
+    };
+</script>  
+
+<style>
+    .cascader-input {  
+      border: 1px solid #dfdfdf;
+      padding: 5px 5px;
+      font-size: 14px;
+      width:200px;
+      transition:all .3s;
+      border-radius:5px;
+      
+      position:relative;
+    }
+    .cascader-input:hover{
+        border: 1px solid #666;
+        cursor:pointer;
+    }
+    .cascader-input .placeholder{
+        color: #999;
+    }
+    .menu-wrap{
+        position:absolute;
+        transform-origin: center top;
+        z-index:2;
+        transform:scaleY(1);
+         opacity:1;
+        transition: transform .3s cubic-bezier(.23,1,.32,1) .1s,opacity .3s cubic-bezier(.23,1,.32,1) .1s;
+        display:flex;
+
+    }
+    .menu-wrap.leave-active{
+         transform:scaleY(0);
+         opacity:0;
+    }
+    .cascader-wrap{
+        display:inline-block;
+    }
+    
+    
+</style>

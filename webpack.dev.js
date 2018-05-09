@@ -4,7 +4,7 @@ const webpack = require('webpack');
    module.exports = merge(common, {
        devServer: {
            contentBase: './dist',
-           port: 8888,
+           port: 4000,
            host:'0.0.0.0',
            compress: true,//压缩,
            hot: true//热替换
