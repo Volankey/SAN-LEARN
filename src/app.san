@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-       <my-cascader option="{{option}}"/>
+       <list/> 
     </div>
 </template> 
 
@@ -11,8 +11,8 @@
     */
     import san, { DataTypes } from 'san';
     //引用组件
-    import Cascader from './compoents/Cascader/cascader.san';
-
+    // import Cascader from './compoents/Cascader/cascader.san';
+    import list from './compoents/san-transition/SAN-TRANSITION.san'
 
     export default {
        initData:function(){
@@ -65,7 +65,7 @@
        },
         components: {
             //引用组件
-            'my-cascader': Cascader,
+            'list': list,
         }
     };
 </script>  

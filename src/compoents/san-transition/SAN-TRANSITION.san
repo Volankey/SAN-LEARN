@@ -1,0 +1,69 @@
+<template>
+<div>
+
+    <ul>
+    <li on-click="handleClick(item)" class="item" s-for="item in list" s-transition="hook('slide',300)">{{item.title}} 点击查看详情</li>
+    
+  </ul>
+  <my-detail s-transition="hook('show-animate',300)" s-if="show"  item="{{item}}" show="{= show =}"/>
+  </div>
+</template>
+<script>
+    import san from 'san';
+    import {transition} from 'san-transition';
+    import Detail from './detail.san'; 
+    export  default{
+        handleClick:function(item){
+            console.log(item)
+           
+            this.data.set("item",item);
+            this.data.set("show",true);
+        },
+        initData: function () {
+             return {
+               list: [{title:"小白",desc:"小白最可爱"}, {title:"大白",desc:"大白最帅"}, {title:"老白",desc:"老白最沉稳"}],
+               show:false,
+            }
+        },
+        components:{
+            "my-detail":Detail
+        },
+        hook: transition
+    };
+</script>  
+
+<style>
+    .item{
+        list-style:none;
+         max-width:200px;
+         transition: background-color .3s;
+    }
+    .item:hover{
+        cursor:pointer;
+        color:#FFF;
+        background:#dfdfdf;
+    }
+    .slide-enter, .slide-leave {
+     transition: all .5s;
+    }
+    .slide-enter, .slide-before-leave {
+    opacity: 1;
+    transform: translate(0, 0);
+    }
+    .slide-before-enter, .slide-leave {
+    opacity: 0;
+    transform: translate(100px, 0);
+    }
+
+    .show-animate-enter, .show-animate-leave {
+     transition: all .5s;
+    }
+    .show-animate-enter, .show-animate-before-leave {
+        opacity: 1;
+        transform: scale(1);
+    }
+    .show-animate-before-enter, .show-animate-leave {
+        opacity: 0;
+        transform: scale(0);
+    }
+</style>
