@@ -24,7 +24,7 @@ module.exports = {
         //依赖
         vendor:['san']
 
-    },
+    }, 
     output: {
         filename: '[name].[hash].js',
         path: path.resolve(__dirname, 'dist'),
