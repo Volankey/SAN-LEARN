@@ -44,6 +44,7 @@
     "lodash": "^4.17.5",
     "san": "^3.5.7",
     "san-loader": "0.0.7",
+    "san-transition": "^1.1.0",
     "san-update": "^2.1.0"
   }
 }
