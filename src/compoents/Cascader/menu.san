@@ -34,11 +34,8 @@
             
             let acv = this.data.get("activeValue");
             //判断是否比当前的级别小，小于的话需要删除后边的activeValue
-            if(index+1<acv.length){
-                acv = acv.splice(0,index+1);
-                //感谢ife@崔晋瑜同学提出的bug~~
-                this.acvl = this.acvl.splice(0,index+1);
-            }
+            if(index+1<acv.length)
+                 acv = acv.splice(0,index+1);
             acv[index]=option.value;
             this.acvl[index] = option.label;
             this.data.set("activeValue",acv);
